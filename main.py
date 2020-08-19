@@ -87,11 +87,16 @@ for i in links:#recorro asignaturas
         try: #clicamos en abrir examen
             driver.find_element_by_xpath("/html/body/div[3]/div[3]/div/div/div[1]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div/a").click()
         except: #repito (por si no ha cargado pagina)
-            driver.sleep(3)
+            time.sleep(3)
             try:
                 driver.find_element_by_xpath("/html/body/div[3]/div[3]/div/div/div[1]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div/a").click()
             except:
-                error=True
+                try:
+                    time.sleep(2)
+                    driver.execute_script("window.scrollTo(0,document.body.scrollHeight/2)")
+                    driver.find_element_by_xpath("/html/body/div[3]/div[3]/div/div/div[1]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div/a").click()
+                except:
+                    error=True
         if error==False:    
             #entra si ha podido entrar a el examen
             if driver.current_url=="https://sso.upc.edu/CAS/login?service=https://upcommons.upc.edu/cas-login": #inicia sesion si nos manda a pag de iniciar sesion
