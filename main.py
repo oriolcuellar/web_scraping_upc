@@ -12,12 +12,12 @@ import requests
 import mechanize
 import webbrowser
 
-
+start=time.time()
 #datos.....................................................................................................
 usuario=""
 contraseña=""
-pag_web="https://upcommons.upc.edu/handle/2117/134982"
-carrera="INFORMATICA"
+pag_web="https://upcommons.upc.edu/handle/2117/134982"  #donde estan las assignaturas
+carrera="INFORMATICA_EPSEVG"
 
 #datos.....................................................................................................
 #manejo de documentos no descargados
@@ -73,16 +73,33 @@ for i in links:#recorro asignaturas
         text=text.replace(":","")
         text=text.replace("?","")
         text=text.replace("¿","")
+        text=text.replace("*","")
         examenes_nombre.append(text)
     tabla=[examen.get_attribute("href") for examen in tabla]
 
     print (len(tabla), "examenes")
     contador_ex=0
-    for examen in tabla:#recorro examenes
-        print(examenes_nombre[contador_ex])#manejo contador
-        contador_ex=contador_ex+1
-        
+    for examen in tabla:#recorro examenes        
         driver.get(examen)#ventana va a pagina del examen
+        contador_ex=contador_ex+1
+        intento=0
+        while intento<3:
+            try:
+                fecha0=driver.find_element_by_class_name("simple-item-view-date")
+                fecha0=fecha0.text
+                fecha=""
+                do=False
+                for letra in fecha0:
+                    if letra=="2":
+                        do=True
+                    if do==True:
+                        fecha=fecha+letra
+                fecha=fecha.replace("/","-")
+                intento=3
+            except:
+                intento=intento+1
+                time.sleep(1)
+        print(examenes_nombre[contador_ex-1]+fecha)#manejo contador
         error=False
         try: #clicamos en abrir examen
             driver.find_element_by_xpath("/html/body/div[3]/div[3]/div/div/div[1]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div/a").click()
@@ -119,16 +136,18 @@ for i in links:#recorro asignaturas
                 except:
                     error=False
                 #descarga del archivo
-                browser.retrieve(url,ruta+"/"+fichero+"/"+examenes_nombre[contador_ex-1]+".pdf")[0]
+                browser.retrieve(url,ruta+"/"+fichero+"/"+examenes_nombre[contador_ex-1]+fecha+" "+str(contador_ex-1)+".pdf")[0]
             except:
                 print( "no puedo descargar "+str(cont_errores))
                 errores=errores+"\n"+"assignatura: "+ fichero+"\n"+"examen: "+examenes_nombre[contador_ex-1]
                 cont_errores=cont_errores+1
         else:
             print( "no puedo descargar ",cont_errores)
-            errores=errores+"\n"+"assignatura: "+ fichero+"\n"+"examen: "+examenes_nombre[contador_ex-1]
+            errores=errores+"\n"+"assignatura: "+ fichero+"\n"+"examen: "+examenes_nombre[contador_ex-1]+fecha+" "+str(contador_ex-1)
             cont_errores=cont_errores+1
-texto="\n"+"ESTOS SON LOS ERRORES "+str(cont_errores)+"\n"+errores
+finish=time.time()
+texto="\n"+"tiempo total: "+str((finish-start)/60)+"\n"+"ESTOS SON LOS ERRORES "+str(cont_errores)+"\n"+errores
 documento=open(ruta+"/ERRORES.txt", "w")
 documento.write(texto)
 documento.close()
+
