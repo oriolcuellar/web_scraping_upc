@@ -17,7 +17,7 @@ start=time.time()
 usuario=""
 contraseña=""
 pag_web="https://upcommons.upc.edu/handle/2117/134982"  #donde estan las assignaturas
-carrera="INFORMATICA_EPSEVG"
+carrera="INFORMATICA_EPSEVG" #nombre de la carpeta
 
 #datos.....................................................................................................
 #manejo de documentos no descargados
