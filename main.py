@@ -146,7 +146,7 @@ for i in links:#recorro asignaturas
             errores=errores+"\n"+"assignatura: "+ fichero+"\n"+"examen: "+examenes_nombre[contador_ex-1]+fecha+" "+str(contador_ex-1)
             cont_errores=cont_errores+1
 finish=time.time()
-texto="\n"+"tiempo total: "+str((finish-start)/60)+"\n"+"ESTOS SON LOS ERRORES "+str(cont_errores)+"\n"+errores
+texto="\n"+"tiempo total: "+str((finish-start)/60)+" minutos "+"\n"+"ESTOS SON LOS ERRORES "+str(cont_errores)+"\n"+errores
 documento=open(ruta+"/ERRORES.txt", "w")
 documento.write(texto)
 documento.close()
