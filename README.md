@@ -1,6 +1,6 @@
 # web_scraping_upc
-descarga todos los examenes de una carrera
-
+descarga todos los examenes de una carrera UPC (bibliotecnica)
+ 
 acciones necesarias:
 
 descargar geckodriver (para linux, version linux) (para windows, version windows)
