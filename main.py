@@ -145,7 +145,7 @@ for i in links:#recorro asignaturas
             print( "no puedo descargar ",cont_errores)
             errores=errores+"\n"+"assignatura: "+ fichero+"\n"+"examen: "+examenes_nombre[contador_ex-1]+fecha+" "+str(contador_ex-1)
             cont_errores=cont_errores+1
-// guardar errores...................................................................................
+# guardar errores...................................................................................
 finish=time.time()
 texto="\n"+"tiempo total: "+str((finish-start)/60)+" minutos "+"\n"+"ESTOS SON LOS ERRORES "+str(cont_errores)+"\n"+errores
 documento=open(ruta+"/ERRORES.txt", "w")
