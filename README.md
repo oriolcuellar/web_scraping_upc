@@ -19,4 +19,4 @@ librerias:
   webbrowser
   
 contiene un zip con las librerias
-quiza debe añadir un addon el firefox (selenium)
+Se debe añadir un addon el firefox (selenium)
