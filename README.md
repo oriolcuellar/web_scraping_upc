@@ -6,12 +6,15 @@
 
   todas las librerias y el geckodriver.exe sin comprimir deben estar en la carpeta donde se ejecuta el main.py
   
-### Geckodriver
-    - descargar geckodriver (para linux, version linux) (para windows, version windows)
-      https://github.com/mozilla/geckodriver/releases
+### Config
+
     - Necitas usuario y contraseña de upc
       en la variable pag_web introduce un string con la pagina web de la carrera
       ej:  "https://upcommons.upc.edu/handle/2117/134982"
+      
+### Geckodriver
+    - descargar geckodriver (para linux, version linux) (para windows, version windows)
+      https://github.com/mozilla/geckodriver/releases
      
 ### Librerias:
 
@@ -23,7 +26,6 @@
     mechanize
     webbrowser
   
-
 ### Addon
 
     Se debe añadir un addon el firefox (selenium)
