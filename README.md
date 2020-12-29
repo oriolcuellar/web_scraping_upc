@@ -11,13 +11,13 @@ descarga todos los examenes de una carrera UPC (bibliotecnica)
 todas las librerias y el geckodriver.exe sin comprimir deben estar en la carpeta donde se ejecuta el main.py
 
 # Librerias:
-  selenium
-  urllib3
-  requests
-  mechanize
-  webbrowser
+ selenium
+ urllib3
+ requests
+ mechanize
+ webbrowser
   
-contiene un zip con las librerias
+ contiene un zip con las librerias
 
 # Addon
    Se debe añadir un addon el firefox (selenium)
