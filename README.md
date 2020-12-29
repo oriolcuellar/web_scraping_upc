@@ -5,7 +5,7 @@
 # acciones necesarias:
 
   todas las librerias y el geckodriver.exe sin comprimir deben estar en la carpeta donde se ejecuta el main.py
-  
+## Geckodriver
     - descargar geckodriver (para linux, version linux) (para windows, version windows)
       https://github.com/mozilla/geckodriver/releases
     - Necitas usuario y contraseña de upc
