@@ -12,7 +12,6 @@
       en la variable pag_web introduce un string con la pagina web de la carrera
       ej:  "https://upcommons.upc.edu/handle/2117/134982"
      
-
 ## Librerias:
 
  contiene un zip con las librerias
