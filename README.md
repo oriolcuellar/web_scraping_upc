@@ -13,7 +13,9 @@
   todas las librerias y el geckodriver.exe sin comprimir deben estar en la carpeta donde se ejecuta el main.py
 
 ## Librerias:
+
  contiene un zip con las librerias
+ 
     selenium
     urllib3
     requests
