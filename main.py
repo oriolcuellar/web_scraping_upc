@@ -11,61 +11,78 @@ import requests
 #importación de libreria para utilizar el motor de navegación web (descargar)
 import mechanize
 import webbrowser
+def datos():
+    #datos.....................................................................................................
+    global usuario
+    usuario="ESCRIBA EL USUARIO DE LA UPC"
+    global contraseña
+    contraseña="ESCRIBA LA CONTRASEÑA DE LA UPC"
+    global pag_web
+    pag_web="https://upcommons.upc.edu/handle/2117/134992"  #donde estan las assignaturas
+    global carrera
+    carrera="FIB" #nombre de la carpeta
 
-start=time.time()
-#datos.....................................................................................................
-usuario=""
-contraseña=""
-pag_web="https://upcommons.upc.edu/handle/2117/134982"  #donde estan las assignaturas
-carrera="INFORMATICA_EPSEVG" #nombre de la carpeta
+def variables():
+    global link_as
+    link_as=""
+    global contador_as 
+    contador_as=0
 
-#datos.....................................................................................................
-#manejo de documentos no descargados
-errores=""
-cont_errores=0
-#manejo directorios
-ruta=os.path.dirname(os.path.abspath(__file__))
-try:
-    print("creando carpetas")
-    os.mkdir(carrera)
-except:
-    print ("ya estaban creadas")
-ruta=ruta+"/"+carrera
-
-#abrir ventana
-print("abriendo pag web")
-driver = webdriver.Firefox( )
-driver.get(pag_web)
-
-#crear tabla de assiganturas
-tabla=driver.find_elements_by_tag_name("tr")
-print(len(tabla), "assignaturas")
-links=[]
-assignaturas=[]
-for casilla in tabla:#creamos tabla de links assignaturas y nombres de assiganuras
-    text=casilla.find_element_by_tag_name("a").get_attribute("href")
-    links.append(text)
-    text=casilla.find_element_by_tag_name("a").text
-    text=text.replace("/", "-")
-    assignaturas.append(text)
-i=""
-contador_as=0
-for i in links:#recorro asignaturas
-    print("\n", contador_as+1, "/", len(assignaturas), "assignaturas")
-    print("ASSIGNATURA: ",assignaturas[contador_as] )#manejo contador
+def carpetas():
+    #manejo de documentos no descargados
+    global errores
+    errores=""
+    global cont_errores
+    cont_errores=0
+    #manejo directorios
+    global ruta
+    ruta=os.path.dirname(os.path.abspath(__file__))
     try:
-        os.mkdir(ruta+"/"+assignaturas[contador_as])
+        print("creando carpetas")
+        os.mkdir(carrera)
     except:
-        print("")
+        print ("ya estaban creadas")
+    ruta=ruta+"/"+carrera
+    print("abriendo pag web")
+    global start
+    start=time.time()
+
+
+def busca_asignaturas():
+    #crear tabla de assiganturas
+    global tabla
+    tabla=driver.find_elements_by_tag_name("tr")
+    print(len(tabla), "assignaturas")
+    global links
+    links=[]
+    global assignaturas
+    assignaturas=[]
+    for casilla in tabla:#creamos tabla de links assignaturas y nombres de assiganuras
+        text=casilla.find_element_by_tag_name("a").get_attribute("href")
+        links.append(text)
+        text=casilla.find_element_by_tag_name("a").text
+        text=text.replace("/", "-")
+        assignaturas.append(text)
+
+
+def busca_examenes():
+    global contador_as
+    global driver
+    print("\n", contador_as +1 , "/", len(assignaturas), "assignaturas")
+    print("ASSIGNATURA: ",assignaturas[contador_as] )#manejo contador
+    os.mkdir(ruta+"/"+assignaturas[contador_as])
+    global fichero
     fichero=""
     fichero=assignaturas[contador_as]
     contador_as=contador_as+1
 
-    driver.get(i)#ventana va a la assignatura
+    driver.get(link_as)#ventana va a la assignatura
+    global tabla
     tabla=driver.find_element_by_id("aspect_discovery_SimpleSearch_div_search-results")
     cerca=tabla.find_elements_by_tag_name("h4")
     tabla=[este.find_element_by_tag_name("a") for este in cerca]#creamos tabla de assignaturas (links)
 
+    global examenes_nombre
     examenes_nombre=[]#tabla de nombres de examen (para crear carpetas)
     for examen_nombre in tabla:
         text=examen_nombre.text
@@ -78,8 +95,13 @@ for i in links:#recorro asignaturas
     tabla=[examen.get_attribute("href") for examen in tabla]
 
     print (len(tabla), "examenes")
+    global contador_ex
     contador_ex=0
-    for examen in tabla:#recorro examenes        
+def preparar():
+        global driver
+        global contador_ex
+        global examenes_nombre
+        global fecha
         driver.get(examen)#ventana va a pagina del examen
         contador_ex=contador_ex+1
         intento=0
@@ -100,6 +122,11 @@ for i in links:#recorro asignaturas
                 intento=intento+1
                 time.sleep(1)
         print(examenes_nombre[contador_ex-1]+fecha)#manejo contador
+def descargamos():
+        global fecha
+        global driver  
+        global errores
+        global cont_errores      
         error=False
         try: #clicamos en abrir examen
             driver.find_element_by_xpath("/html/body/div[3]/div[3]/div/div/div[1]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div/a").click()
@@ -145,10 +172,38 @@ for i in links:#recorro asignaturas
             print( "no puedo descargar ",cont_errores)
             errores=errores+"\n"+"assignatura: "+ fichero+"\n"+"examen: "+examenes_nombre[contador_ex-1]+fecha+" "+str(contador_ex-1)
             cont_errores=cont_errores+1
-# guardar errores...................................................................................
-finish=time.time()
-texto="\n"+"tiempo total: "+str((finish-start)/60)+" minutos "+"\n"+"ESTOS SON LOS ERRORES "+str(cont_errores)+"\n"+errores
-documento=open(ruta+"/ERRORES.txt", "w")
-documento.write(texto)
-documento.close()
 
+def cerrar():
+    global start
+    global cont_errores
+    global errores
+    global texto
+    global ruta
+    global driver
+    finish=time.time()
+    texto="\n"+"tiempo total: "+str((finish-start)/60)+" minutos "+"\n"+"ESTOS SON LOS ERRORES "+str(cont_errores)+"\n"+errores
+    documento=open(ruta+"/ERRORES.txt", "w")
+    documento.write(texto)
+    documento.close()
+    driver.close()
+
+# MAIN ...............................................................................
+variables()
+datos()
+carpetas()
+
+
+driver = webdriver.Firefox()
+driver.get(pag_web)
+
+busca_asignaturas()
+
+for link_as in links:#recorro asignaturas
+    busca_examenes()
+    for examen in tabla:#recorro examenes       
+        preparar()
+        descargamos()
+
+cerrar()
+
+# MAIN ...............................................................................
