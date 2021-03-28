@@ -6,7 +6,7 @@ import os
 
 import urllib3
 import requests
-
+import html5lib
 
 #importación de libreria para utilizar el motor de navegación web (descargar)
 import mechanize
@@ -14,9 +14,9 @@ import webbrowser
 def datos():
     #datos.....................................................................................................
     global usuario
-    usuario="ESCRIBA EL USUARIO DE LA UPC"
+    usuario="oriol.cuellar"
     global contraseña
-    contraseña="ESCRIBA LA CONTRASEÑA DE LA UPC"
+    contraseña="Mongolo3upc"
     global pag_web
     pag_web="https://upcommons.upc.edu/handle/2117/134992"  #donde estan las assignaturas
     global carrera
@@ -75,13 +75,11 @@ def busca_examenes():
     fichero=""
     fichero=assignaturas[contador_as]
     contador_as=contador_as+1
-
     driver.get(link_as)#ventana va a la assignatura
     global tabla
     tabla=driver.find_element_by_id("aspect_discovery_SimpleSearch_div_search-results")
     cerca=tabla.find_elements_by_tag_name("h4")
     tabla=[este.find_element_by_tag_name("a") for este in cerca]#creamos tabla de assignaturas (links)
-
     global examenes_nombre
     examenes_nombre=[]#tabla de nombres de examen (para crear carpetas)
     for examen_nombre in tabla:
@@ -93,7 +91,6 @@ def busca_examenes():
         text=text.replace("*","")
         examenes_nombre.append(text)
     tabla=[examen.get_attribute("href") for examen in tabla]
-
     print (len(tabla), "examenes")
     global contador_ex
     contador_ex=0
