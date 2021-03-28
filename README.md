@@ -25,6 +25,7 @@
     requests
     mechanize
     webbrowser
+    html5lib
   
 ### Addon
 
