@@ -70,6 +70,12 @@ def busca_examenes():
     global driver
     print("\n", contador_as +1 , "/", len(assignaturas), "assignaturas")
     print("ASSIGNATURA: ",assignaturas[contador_as] )#manejo contador
+    ruta_as=os.path.dirname(os.path.abspath(__file__))
+    ruta_as=ruta_as+"/"+carrera+"/"+assignaturas[contador_as]
+    if os.path.isdir(ruta_as): 
+        print("ASSIGNATURA: ",assignaturas[contador_as], " ya estaba descargada" )#manejo ya descargados
+        contador_as=contador_as+1
+        return False
     os.mkdir(ruta+"/"+assignaturas[contador_as])
     global fichero
     fichero=""
@@ -77,7 +83,11 @@ def busca_examenes():
     contador_as=contador_as+1
     driver.get(link_as)#ventana va a la assignatura
     global tabla
-    tabla=driver.find_element_by_id("aspect_discovery_SimpleSearch_div_search-results")
+    try:
+        tabla=driver.find_element_by_id("aspect_discovery_SimpleSearch_div_search-results")
+    except:
+        time.sleep(2)
+        tabla=driver.find_element_by_id("aspect_discovery_SimpleSearch_div_search-results")
     cerca=tabla.find_elements_by_tag_name("h4")
     tabla=[este.find_element_by_tag_name("a") for este in cerca]#creamos tabla de assignaturas (links)
     global examenes_nombre
@@ -94,6 +104,7 @@ def busca_examenes():
     print (len(tabla), "examenes")
     global contador_ex
     contador_ex=0
+    return True
 def preparar():
         global driver
         global contador_ex
@@ -196,10 +207,11 @@ driver.get(pag_web)
 busca_asignaturas()
 
 for link_as in links:#recorro asignaturas
-    busca_examenes()
-    for examen in tabla:#recorro examenes       
-        preparar()
-        descargamos()
+    descargo=busca_examenes()
+    if descargo:
+        for examen in tabla:#recorro examenes       
+            preparar()
+            descargamos()
 
 cerrar()
 
