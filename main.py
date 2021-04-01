@@ -14,9 +14,9 @@ import webbrowser
 def datos():
     #datos.....................................................................................................
     global usuario
-    usuario="oriol.cuellar"
+    usuario=""
     global contraseña
-    contraseña="Mongolo3upc"
+    contraseña=""
     global pag_web
     pag_web="https://upcommons.upc.edu/handle/2117/134992"  #donde estan las assignaturas
     global carrera
