@@ -1,4 +1,4 @@
-# web_scraping_upc
+# web_scraping_upc (deprecated)
 
     descarga todos los examenes de una carrera UPC (bibliotecnica)
  
